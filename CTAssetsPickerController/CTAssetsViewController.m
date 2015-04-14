@@ -88,7 +88,7 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
     }
     
     [self addNotificationObserver];
-    [self addGestureRecognizer];
+//    [self addGestureRecognizer];
     
     return self;
 }
@@ -416,75 +416,79 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
 
 #pragma mark - Collection View Delegate
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
-    
-    CTAssetsViewCell *cell = (CTAssetsViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    
-    if (!cell.isEnabled)
-        return NO;
-    else if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldSelectAsset:)])
-        return [self.picker.delegate assetsPickerController:self.picker shouldSelectAsset:asset];
-    else
-        return YES;
-}
+//- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
+//    
+//    CTAssetsViewCell *cell = (CTAssetsViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+//    
+//    if (!cell.isEnabled)
+//        return NO;
+//    else if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldSelectAsset:)])
+//        return [self.picker.delegate assetsPickerController:self.picker shouldSelectAsset:asset];
+//    else
+//        return YES;
+//}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
+//    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
     
-    [self.picker selectAsset:asset];
-    
-    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didSelectAsset:)])
-        [self.picker.delegate assetsPickerController:self.picker didSelectAsset:asset];
+    CTAssetsPageViewController *vc = [[CTAssetsPageViewController alloc] initWithAssets:self.assets];
+    vc.pageIndex = indexPath.item;
+    [self.navigationController pushViewController:vc animated:YES];
+
+//    [self.picker selectAsset:asset];
+//    
+//    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didSelectAsset:)])
+//        [self.picker.delegate assetsPickerController:self.picker didSelectAsset:asset];
 }
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
-    
-    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldDeselectAsset:)])
-        return [self.picker.delegate assetsPickerController:self.picker shouldDeselectAsset:asset];
-    else
-        return YES;
-}
+//- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
+//    
+//    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldDeselectAsset:)])
+//        return [self.picker.delegate assetsPickerController:self.picker shouldDeselectAsset:asset];
+//    else
+//        return YES;
+//}
 
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
-    
-    [self.picker deselectAsset:asset];
-    
-    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didDeselectAsset:)])
-        [self.picker.delegate assetsPickerController:self.picker didDeselectAsset:asset];
-}
+//- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
+//    
+//    [self.picker deselectAsset:asset];
+//    
+//    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didDeselectAsset:)])
+//        [self.picker.delegate assetsPickerController:self.picker didDeselectAsset:asset];
+//}
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
-    
-    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldHighlightAsset:)])
-        return [self.picker.delegate assetsPickerController:self.picker shouldHighlightAsset:asset];
-    else
-        return YES;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
-    
-    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didHighlightAsset:)])
-        [self.picker.delegate assetsPickerController:self.picker didHighlightAsset:asset];
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
-    
-    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didUnhighlightAsset:)])
-        [self.picker.delegate assetsPickerController:self.picker didUnhighlightAsset:asset];
-}
+//- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
+//    
+//    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldHighlightAsset:)])
+//        return [self.picker.delegate assetsPickerController:self.picker shouldHighlightAsset:asset];
+//    else
+//        return YES;
+//}
+//
+//- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
+//    
+//    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didHighlightAsset:)])
+//        [self.picker.delegate assetsPickerController:self.picker didHighlightAsset:asset];
+//}
+//
+//- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
+//    
+//    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didUnhighlightAsset:)])
+//        [self.picker.delegate assetsPickerController:self.picker didUnhighlightAsset:asset];
+//}
 
 
 @end

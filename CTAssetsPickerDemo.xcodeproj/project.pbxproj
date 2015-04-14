@@ -33,6 +33,7 @@
 		ADE31DA017EFF08C008958B8 /* CTMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ADE31D9F17EFF08C008958B8 /* CTMasterViewController.m */; };
 		ADE31DA517EFF08C008958B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ADE31DA417EFF08C008958B8 /* Images.xcassets */; };
 		ADE31DC217EFF159008958B8 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADE31DC117EFF159008958B8 /* AssetsLibrary.framework */; };
+		E97C7DB71ADD4160005AAFB2 /* CTAssetsPicker.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 249481A61A4F2820000827AC /* CTAssetsPicker.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -332,6 +333,7 @@
 				ADE31DA517EFF08C008958B8 /* Images.xcassets in Resources */,
 				ADE31D9417EFF08C008958B8 /* InfoPlist.strings in Resources */,
 				ADE31D9D17EFF08C008958B8 /* Main.storyboard in Resources */,
+				E97C7DB71ADD4160005AAFB2 /* CTAssetsPicker.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

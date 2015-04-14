@@ -41,6 +41,8 @@
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *videoImage;
 
+@property (nonatomic, strong) UIButton *selectButton;
+
 @end
 
 
@@ -54,6 +56,7 @@ static CGFloat titleHeight;
 static UIImage *videoIcon;
 static UIColor *titleColor;
 static UIImage *checkedIcon;
+static UIImage *unCheckedIcon;
 static UIColor *selectedColor;
 static UIColor *disabledColor;
 
@@ -64,6 +67,7 @@ static UIColor *disabledColor;
     videoIcon       = [UIImage ctassetsPickerControllerImageNamed:@"CTAssetsPickerVideo"];
     titleColor      = [UIColor whiteColor];
     checkedIcon     = [UIImage ctassetsPickerControllerImageNamed:@"CTAssetsPickerChecked"];
+    unCheckedIcon   = [UIImage ctassetsPickerControllerImageNamed:@"CTAssetsPickerUnChecked"];
     selectedColor   = [UIColor colorWithWhite:1 alpha:0.3];
     disabledColor   = [UIColor colorWithWhite:1 alpha:0.9];
 }
@@ -114,8 +118,21 @@ static UIColor *disabledColor;
     if (!self.isEnabled)
         [self drawDisabledViewInRect:rect];
     
-    else if (self.selected)
-        [self drawSelectedViewInRect:rect];
+//    else if (self.selected)
+//        [self drawSelectedViewInRect:rect];
+    else{
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame = CGRectMake(0, 0, 30, 30);
+        if(self.selected){
+//            [self drawSelectedViewInRect:rect];
+            [button setBackgroundImage:checkedIcon forState:UIControlStateNormal];
+        }else{
+//            [self drawUnSelectedViewInRect:rect];
+            [button setBackgroundImage:unCheckedIcon forState:UIControlStateNormal];
+        }
+        [button addTarget:self action:@selector(selectAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:button];
+    }
 }
 
 - (void)drawThumbnailInRect:(CGRect)rect
@@ -178,6 +195,19 @@ static UIColor *disabledColor;
     [checkedIcon drawAtPoint:CGPointMake(CGRectGetMaxX(rect) - checkedIcon.size.width, CGRectGetMinY(rect))];
 }
 
+- (void)drawUnSelectedViewInRect:(CGRect)rect
+{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, selectedColor.CGColor);
+    CGContextFillRect(context, rect);
+    
+    [unCheckedIcon drawAtPoint:CGPointMake(CGRectGetMaxX(rect) - unCheckedIcon.size.width, CGRectGetMinY(rect))];
+}
+
+- (void) selectAction:(id)sender {
+    self.selected = !self.selected;
+    NSLog(@"select %d",self.selected);
+}
 
 #pragma mark - Accessibility Label
 

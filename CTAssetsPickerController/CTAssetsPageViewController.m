@@ -69,6 +69,7 @@
 {
     [super viewDidLoad];
     [self addNotificationObserver];
+    [self setupNavbar];
 }
 
 - (void)dealloc
@@ -80,7 +81,22 @@
 {
     return self.isStatusBarHidden;
 }
+#pragma mark -
+- (void) setupNavbar {
+    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightBtn.frame = CGRectMake(0, 0, 30, 30);
+    [rightBtn setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerUnChecked"] forState:UIControlStateNormal];
+    [rightBtn setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerChecked"] forState:UIControlStateHighlighted];
+    [rightBtn addTarget:self action:@selector(selectAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
+    self.navigationItem.rightBarButtonItem = rightItem;
+}
 
+- (void) selectAction:(UIButton *)sender {
+    NSLog(@"sleected ");
+    sender.selected = YES;
+    
+}
 
 #pragma mark - Update Title
 
