@@ -75,7 +75,7 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
     
     if (self = [super initWithCollectionViewLayout:layout])
     {
-        self.collectionView.allowsMultipleSelection = YES;
+//        self.collectionView.allowsMultipleSelection = YES;
         
         [self.collectionView registerClass:CTAssetsViewCell.class
                 forCellWithReuseIdentifier:CTAssetsViewCellIdentifier];
@@ -390,11 +390,18 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
     if ([self.picker.selectedAssets containsObject:asset])
     {
         cell.selected = YES;
+        cell.isSelected = YES;
         [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    }else{
+        cell.isSelected = NO;
+        cell.selected = NO;
     }
-    
     [cell bind:asset];
     
+    
+    [cell.selectButton removeTarget:self action:@selector(cellSelectedAction:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.selectButton addTarget:self action:@selector(cellSelectedAction:) forControlEvents:UIControlEventTouchUpInside];
+    cell.selectButton.tag = indexPath.row;
     return cell;
 }
 
@@ -415,7 +422,17 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
 
 
 #pragma mark - Collection View Delegate
-
+- (void) cellSelectedAction:(UIButton *)sender{
+    ALAsset *asset = [self.assets objectAtIndex:sender.tag];
+    NSLog(@"cell selection %@",asset);
+    
+    if ([self.picker.selectedAssets containsObject:asset]){
+        [self.picker deselectAsset:asset];
+    }else{
+        [self.picker selectAsset:asset];
+    }
+    
+}
 //- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 //{
 //    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
@@ -433,6 +450,7 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
 //    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
+//    NSLog(@"selected %@",asset);
     
     CTAssetsPageViewController *vc = [[CTAssetsPageViewController alloc] initWithAssets:self.assets];
     vc.pageIndex = indexPath.item;
@@ -454,15 +472,20 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
 //        return YES;
 //}
 
-//- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-//{
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+
 //    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
+//    NSLog(@"deselect %@",asset);
 //    
+//    CTAssetsPageViewController *vc = [[CTAssetsPageViewController alloc] initWithAssets:self.assets];
+//    vc.pageIndex = indexPath.item;
+//    [self.navigationController pushViewController:vc animated:YES];
 //    [self.picker deselectAsset:asset];
 //    
 //    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didDeselectAsset:)])
 //        [self.picker.delegate assetsPickerController:self.picker didDeselectAsset:asset];
-//}
+}
 
 //- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 //{

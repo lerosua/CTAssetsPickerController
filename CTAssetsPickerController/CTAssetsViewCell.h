@@ -33,7 +33,8 @@
 @interface CTAssetsViewCell : UICollectionViewCell
 
 @property (nonatomic, assign, getter = isEnabled) BOOL enabled;
-
+@property (nonatomic, assign) BOOL isSelected;
+@property (nonatomic, strong) UIButton *selectButton;
 - (void)bind:(ALAsset *)asset;
 
 @end

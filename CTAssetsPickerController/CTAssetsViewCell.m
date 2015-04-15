@@ -41,8 +41,6 @@
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *videoImage;
 
-@property (nonatomic, strong) UIButton *selectButton;
-
 @end
 
 
@@ -67,7 +65,7 @@ static UIColor *disabledColor;
     videoIcon       = [UIImage ctassetsPickerControllerImageNamed:@"CTAssetsPickerVideo"];
     titleColor      = [UIColor whiteColor];
     checkedIcon     = [UIImage ctassetsPickerControllerImageNamed:@"CTAssetsPickerChecked"];
-    unCheckedIcon   = [UIImage ctassetsPickerControllerImageNamed:@"CTAssetsPickerUnChecked"];
+    unCheckedIcon   = [UIImage imageNamed:@"CTAssetsPickerUnChecked"];
     selectedColor   = [UIColor colorWithWhite:1 alpha:0.3];
     disabledColor   = [UIColor colorWithWhite:1 alpha:0.9];
 }
@@ -80,6 +78,7 @@ static UIColor *disabledColor;
         self.isAccessibilityElement = YES;
         self.accessibilityTraits    = UIAccessibilityTraitImage;
         self.enabled                = YES;
+        self.isSelected             = NO;
     }
     
     return self;
@@ -103,6 +102,11 @@ static UIColor *disabledColor;
     [self setNeedsDisplay];
 }
 
+- (void) setIsSelected:(BOOL)isSelected {
+    _isSelected = isSelected;
+//    [self setNeedsDisplay];
+}
+
 
 #pragma mark - Draw Rect
 
@@ -121,17 +125,17 @@ static UIColor *disabledColor;
 //    else if (self.selected)
 //        [self drawSelectedViewInRect:rect];
     else{
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0, 0, 30, 30);
-        if(self.selected){
-//            [self drawSelectedViewInRect:rect];
-            [button setBackgroundImage:checkedIcon forState:UIControlStateNormal];
+//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.selectButton.frame = CGRectMake(CGRectGetMaxX(rect) - checkedIcon.size.width, 0, 30, 30);
+        if(self.isSelected){
+            [self drawSelectedViewInRect:rect];
+            NSLog(@"drawSelectedViewInRect");
         }else{
-//            [self drawUnSelectedViewInRect:rect];
-            [button setBackgroundImage:unCheckedIcon forState:UIControlStateNormal];
+            NSLog(@"--drawUnSelectedViewInRect");
+            [self drawUnSelectedViewInRect:rect];
         }
-        [button addTarget:self action:@selector(selectAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:button];
+//        [button addTarget:self action:@selector(selectAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.selectButton];
     }
 }
 
@@ -188,23 +192,24 @@ static UIColor *disabledColor;
 
 - (void)drawSelectedViewInRect:(CGRect)rect
 {
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, selectedColor.CGColor);
-    CGContextFillRect(context, rect);
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//    CGContextSetFillColorWithColor(context, selectedColor.CGColor);
+//    CGContextFillRect(context, rect);
     
     [checkedIcon drawAtPoint:CGPointMake(CGRectGetMaxX(rect) - checkedIcon.size.width, CGRectGetMinY(rect))];
 }
 
 - (void)drawUnSelectedViewInRect:(CGRect)rect
 {
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, selectedColor.CGColor);
-    CGContextFillRect(context, rect);
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//    CGContextSetFillColorWithColor(context, selectedColor.CGColor);
+//    CGContextFillRect(context, rect);
     
     [unCheckedIcon drawAtPoint:CGPointMake(CGRectGetMaxX(rect) - unCheckedIcon.size.width, CGRectGetMinY(rect))];
 }
 
-- (void) selectAction:(id)sender {
+- (void) selectAction:(UIButton *)button {
+    self.isSelected = !self.isSelected;
     self.selected = !self.selected;
     NSLog(@"select %d",self.selected);
 }
@@ -214,6 +219,12 @@ static UIColor *disabledColor;
 - (NSString *)accessibilityLabel
 {
     return self.asset.accessibilityLabel;
+}
+- (UIButton *)selectButton {
+    if(!_selectButton){
+        _selectButton= [UIButton buttonWithType:UIButtonTypeCustom];
+    }
+    return _selectButton;
 }
 
 @end

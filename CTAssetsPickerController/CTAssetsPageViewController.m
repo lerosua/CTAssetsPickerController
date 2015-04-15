@@ -29,7 +29,7 @@
 #import "CTAssetItemViewController.h"
 #import "CTAssetScrollView.h"
 #import "NSBundle+CTAssetsPickerController.h"
-
+#import "CTAssetsPickerController.h"
 
 
 
@@ -37,9 +37,11 @@
 @interface CTAssetsPageViewController ()
 <UIPageViewControllerDataSource, UIPageViewControllerDelegate, CTAssetItemViewControllerDataSource>
 
+@property (nonatomic, weak) CTAssetsPickerController *picker;
 @property (nonatomic, strong) NSArray *assets;
 @property (nonatomic, assign, getter = isStatusBarHidden) BOOL statusBarHidden;
 
+@property (nonatomic, strong) UIButton *selectButton;
 @end
 
 
@@ -72,6 +74,12 @@
     [self setupNavbar];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self setButtonStatus:self.pageIndex];
+}
+
 - (void)dealloc
 {
     [self removeNotificationObserver];
@@ -83,19 +91,26 @@
 }
 #pragma mark -
 - (void) setupNavbar {
-    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    rightBtn.frame = CGRectMake(0, 0, 30, 30);
-    [rightBtn setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerUnChecked"] forState:UIControlStateNormal];
-    [rightBtn setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerChecked"] forState:UIControlStateHighlighted];
-    [rightBtn addTarget:self action:@selector(selectAction:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
+    self.selectButton= [UIButton buttonWithType:UIButtonTypeCustom];
+    self.selectButton.frame = CGRectMake(0, 0, 30, 30);
+    [self.selectButton setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerUnChecked"] forState:UIControlStateNormal];
+    [self.selectButton setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerChecked"] forState:UIControlStateHighlighted];
+    [self.selectButton addTarget:self action:@selector(selectAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:self.selectButton];
     self.navigationItem.rightBarButtonItem = rightItem;
 }
 
 - (void) selectAction:(UIButton *)sender {
-    NSLog(@"sleected ");
-    sender.selected = YES;
     
+    if(self.pageIndex < self.assets.count){
+        ALAsset *asset = [self.assets objectAtIndex:self.pageIndex];
+        if([self.picker.selectedAssets containsObject:asset]){
+            [self.picker deselectAsset:asset];
+        }else{
+            [self.picker selectAsset:asset];
+        }
+        [self setButtonStatus:self.pageIndex];
+    }
 }
 
 #pragma mark - Update Title
@@ -104,6 +119,20 @@
 {
     NSInteger count = self.assets.count;
     self.title      = [NSString stringWithFormat:CTAssetsPickerControllerLocalizedString(@"%ld of %ld"), index, count];
+}
+
+#pragma mark - Update Button
+- (void) setButtonStatus:(NSInteger)index
+{
+    if (index < self.assets.count) {
+        ALAsset *asset = [self.assets objectAtIndex:index];
+        if([self.picker.selectedAssets containsObject:asset]){
+            [self.selectButton setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerChecked"] forState:UIControlStateNormal];
+        }else{
+            [self.selectButton setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerUnChecked"] forState:UIControlStateNormal];
+        }
+    }
+
 }
 
 
@@ -177,6 +206,7 @@
         NSInteger index                 = vc.pageIndex + 1;
         
         [self setTitleIndex:index];
+        [self setButtonStatus:index-1];
     }
 }
 
@@ -257,5 +287,9 @@
 {
     return [self.assets objectAtIndex:index];
 }
-
+#pragma mark - Accessors
+- (CTAssetsPickerController *)picker
+{
+    return (CTAssetsPickerController *)self.navigationController.parentViewController;
+}
 @end
