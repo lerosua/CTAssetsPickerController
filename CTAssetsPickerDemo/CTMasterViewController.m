@@ -193,7 +193,7 @@
 
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
 {
-    if (picker.selectedAssets.count >= 10)
+    if (picker.selectedAssets.count >= 5)
     {
         UIAlertView *alertView =
         [[UIAlertView alloc] initWithTitle:@"Attention"
@@ -217,7 +217,7 @@
         [alertView show];
     }
     
-    return (picker.selectedAssets.count < 10 && asset.defaultRepresentation != nil);
+    return (picker.selectedAssets.count < 5 && asset.defaultRepresentation != nil);
 }
 
 @end

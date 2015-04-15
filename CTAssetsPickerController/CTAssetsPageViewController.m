@@ -107,7 +107,15 @@
         if([self.picker.selectedAssets containsObject:asset]){
             [self.picker deselectAsset:asset];
         }else{
-            [self.picker selectAsset:asset];
+            if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldSelectAsset:)]){
+                if([self.picker.delegate assetsPickerController:self.picker shouldSelectAsset:asset]){
+                    [self.picker selectAsset:asset];
+                }
+            }else{
+                [self.picker selectAsset:asset];
+                if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didSelectAsset:)])
+                    [self.picker.delegate assetsPickerController:self.picker didSelectAsset:asset];
+            }
         }
         [self setButtonStatus:self.pageIndex];
     }

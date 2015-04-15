@@ -65,7 +65,7 @@ static UIColor *disabledColor;
     videoIcon       = [UIImage ctassetsPickerControllerImageNamed:@"CTAssetsPickerVideo"];
     titleColor      = [UIColor whiteColor];
     checkedIcon     = [UIImage ctassetsPickerControllerImageNamed:@"CTAssetsPickerChecked"];
-    unCheckedIcon   = [UIImage imageNamed:@"CTAssetsPickerUnChecked"];
+    unCheckedIcon   = [UIImage ctassetsPickerControllerImageNamed:@"CTAssetsPickerUnChecked"];
     selectedColor   = [UIColor colorWithWhite:1 alpha:0.3];
     disabledColor   = [UIColor colorWithWhite:1 alpha:0.9];
 }
@@ -104,7 +104,6 @@ static UIColor *disabledColor;
 
 - (void) setIsSelected:(BOOL)isSelected {
     _isSelected = isSelected;
-//    [self setNeedsDisplay];
 }
 
 
@@ -121,20 +120,14 @@ static UIColor *disabledColor;
     
     if (!self.isEnabled)
         [self drawDisabledViewInRect:rect];
-    
-//    else if (self.selected)
-//        [self drawSelectedViewInRect:rect];
+
     else{
-//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         self.selectButton.frame = CGRectMake(CGRectGetMaxX(rect) - checkedIcon.size.width, 0, 30, 30);
         if(self.isSelected){
             [self drawSelectedViewInRect:rect];
-            NSLog(@"drawSelectedViewInRect");
         }else{
-            NSLog(@"--drawUnSelectedViewInRect");
             [self drawUnSelectedViewInRect:rect];
         }
-//        [button addTarget:self action:@selector(selectAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.selectButton];
     }
 }
@@ -206,12 +199,6 @@ static UIColor *disabledColor;
 //    CGContextFillRect(context, rect);
     
     [unCheckedIcon drawAtPoint:CGPointMake(CGRectGetMaxX(rect) - unCheckedIcon.size.width, CGRectGetMinY(rect))];
-}
-
-- (void) selectAction:(UIButton *)button {
-    self.isSelected = !self.isSelected;
-    self.selected = !self.selected;
-    NSLog(@"select %d",self.selected);
 }
 
 #pragma mark - Accessibility Label
