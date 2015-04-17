@@ -113,7 +113,7 @@
                          }
                          completion:^(BOOL finished){
                              toVC.view.alpha   = 1;
-                             toVC.navigationController.toolbarHidden = YES;
+                             toVC.navigationController.toolbar.alpha = 1;
                              [snapshot removeFromSuperview];
                              [transitionContext completeTransition:YES];
                          }];
@@ -179,12 +179,12 @@
                          }
                          completion:^(BOOL finished){
                              
-                             if (toVC.collectionView.indexPathsForSelectedItems.count > 0)
-                             {
+//                             if (toVC.collectionView.indexPathsForSelectedItems.count > 0)
+//                             {
                                  dispatch_async(dispatch_get_main_queue(), ^{
                                      [toVC.navigationController setToolbarHidden:NO animated:YES];
                                  });
-                             }
+//                             }
                              
                              [snapshot removeFromSuperview];
                              [transitionContext completeTransition:YES];

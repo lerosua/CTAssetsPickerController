@@ -45,6 +45,7 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
 
 @interface CTAssetsPickerController ()
 
+- (void)dismiss:(id)sender;
 - (void)finishPickingAssets:(id)sender;
 
 - (NSString *)toolbarTitle;
@@ -110,7 +111,8 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.navigationController setToolbarHidden:(self.picker.selectedAssets.count == 0) animated:YES];
+//    [self.navigationController setToolbarHidden:(self.picker.selectedAssets.count == 0) animated:YES];
+    [self.navigationController setToolbarHidden:NO];
 }
 
 - (void)dealloc
@@ -145,16 +147,22 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
 
 - (void)setupButtons
 {
+    
     self.navigationItem.rightBarButtonItem =
-    [[UIBarButtonItem alloc] initWithTitle:CTAssetsPickerControllerLocalizedString(@"Done")
+    [[UIBarButtonItem alloc] initWithTitle:CTAssetsPickerControllerLocalizedString(@"Cancel")
                                      style:UIBarButtonItemStyleDone
                                     target:self.picker
-                                    action:@selector(finishPickingAssets:)];
+                                    action:@selector(dismiss:)];
     
-    if (self.picker.alwaysEnableDoneButton)
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-    else
-        self.navigationItem.rightBarButtonItem.enabled = (self.picker.selectedAssets.count > 0);
+//    self.navigationItem.rightBarButtonItem =
+//    [[UIBarButtonItem alloc] initWithTitle:CTAssetsPickerControllerLocalizedString(@"Done")
+//                                     style:UIBarButtonItemStyleDone
+//                                    target:self.picker
+//                                    action:@selector(finishPickingAssets:)];
+//    if (self.picker.alwaysEnableDoneButton)
+//        self.navigationItem.rightBarButtonItem.enabled = YES;
+//    else
+//        self.navigationItem.rightBarButtonItem.enabled = (self.picker.selectedAssets.count > 0);
 }
 
 - (void)setupToolbar
@@ -281,10 +289,10 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
 - (void)selectedAssetsChanged:(NSNotification *)notification
 {
     NSArray *selectedAssets = (NSArray *)notification.object;
-    
-    [[self.toolbarItems objectAtIndex:1] setTitle:[self.picker toolbarTitle]];
-    
-    [self.navigationController setToolbarHidden:(selectedAssets.count == 0) animated:YES];
+    [[self.toolbarItems objectAtIndex:1] setTitle:[NSString stringWithFormat:@"%ld",(long)selectedAssets.count]];
+
+//    [[self.toolbarItems objectAtIndex:1] setTitle:[self.picker toolbarTitle]];
+//    [self.navigationController setToolbarHidden:(selectedAssets.count == 0) animated:YES];
     
     // Reload assets for calling de/selectAsset method programmatically
     [self.collectionView reloadData];

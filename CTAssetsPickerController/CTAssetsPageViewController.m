@@ -74,10 +74,17 @@
     [self setupNavbar];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self setupToolbar];
+    
+}
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self setButtonStatus:self.pageIndex];
+
 }
 
 - (void)dealloc
@@ -98,6 +105,11 @@
     [self.selectButton addTarget:self action:@selector(selectAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:self.selectButton];
     self.navigationItem.rightBarButtonItem = rightItem;
+}
+
+- (void)setupToolbar
+{
+    self.toolbarItems = self.picker.toolbarItems;
 }
 
 - (void) selectAction:(UIButton *)sender {
@@ -229,11 +241,18 @@
                selector:@selector(scrollViewTapped:)
                    name:CTAssetScrollViewTappedNotification
                  object:nil];
+    
+    [center addObserver:self
+               selector:@selector(selectedAssetsChanged:)
+                   name:CTAssetsPickerSelectedAssetsChangedNotification
+                 object:nil];
 }
 
 - (void)removeNotificationObserver
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:CTAssetScrollViewTappedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:CTAssetsPickerSelectedAssetsChangedNotification object:nil];
+
 }
 
 
@@ -247,6 +266,13 @@
         [self toogleNavigationBar:gesture];
 }
 
+#pragma mark -
+- (void)selectedAssetsChanged:(NSNotification *)notification
+{
+    NSArray *selectedAssets = (NSArray *)notification.object;
+    [[self.toolbarItems objectAtIndex:1] setTitle:[NSString stringWithFormat:@"%ld",(long)selectedAssets.count]];
+    
+}
 
 #pragma mark - Fade in / away navigation bar
 
@@ -268,6 +294,9 @@
                          [self.navigationController.navigationBar setAlpha:0.0f];
                          [self.navigationController setNavigationBarHidden:YES];
                          self.view.backgroundColor = [UIColor blackColor];
+                         
+                         [self.navigationController.toolbar setAlpha:0.0f];
+                         [self.navigationController setToolbarHidden:YES];
                      }
                      completion:^(BOOL finished){
                          
@@ -284,6 +313,10 @@
                          [self setNeedsStatusBarAppearanceUpdate];
                          [self.navigationController.navigationBar setAlpha:1.0f];
                          self.view.backgroundColor = [UIColor whiteColor];
+                         
+                         
+                         [self.navigationController.toolbar setAlpha:1.0f];
+                         [self.navigationController setToolbarHidden:NO];
                      }];
 }
 

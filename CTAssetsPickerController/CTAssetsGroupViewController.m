@@ -77,9 +77,13 @@
     [super viewDidLoad];
     [self setupViews];
     [self setupButtons];
-    [self setupToolbar];
     [self localize];
     [self setupGroup];
+}
+
+- (void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+//    self.navigationController.toolbarHidden = YES;
 }
 
 - (void)dealloc
@@ -119,25 +123,31 @@
 
 - (void)setupButtons
 {
-    if (self.picker.showsCancelButton)
-    {
-        self.navigationItem.leftBarButtonItem =
+        self.navigationItem.rightBarButtonItem =
         [[UIBarButtonItem alloc] initWithTitle:CTAssetsPickerControllerLocalizedString(@"Cancel")
                                          style:UIBarButtonItemStylePlain
                                         target:self.picker
                                         action:@selector(dismiss:)];
-    }
     
-    self.navigationItem.rightBarButtonItem =
-    [[UIBarButtonItem alloc] initWithTitle:CTAssetsPickerControllerLocalizedString(@"Done")
-                                     style:UIBarButtonItemStyleDone
-                                    target:self.picker
-                                    action:@selector(finishPickingAssets:)];
+//    if (self.picker.showsCancelButton)
+//    {
+//        self.navigationItem.leftBarButtonItem =
+//        [[UIBarButtonItem alloc] initWithTitle:CTAssetsPickerControllerLocalizedString(@"Cancel")
+//                                         style:UIBarButtonItemStylePlain
+//                                        target:self.picker
+//                                        action:@selector(dismiss:)];
+//    }
     
-    if (self.picker.alwaysEnableDoneButton)
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-    else
-        self.navigationItem.rightBarButtonItem.enabled = (self.picker.selectedAssets.count > 0);
+//    self.navigationItem.rightBarButtonItem =
+//    [[UIBarButtonItem alloc] initWithTitle:CTAssetsPickerControllerLocalizedString(@"Done")
+//                                     style:UIBarButtonItemStyleDone
+//                                    target:self.picker
+//                                    action:@selector(finishPickingAssets:)];
+//    
+//    if (self.picker.alwaysEnableDoneButton)
+//        self.navigationItem.rightBarButtonItem.enabled = YES;
+//    else
+//        self.navigationItem.rightBarButtonItem.enabled = (self.picker.selectedAssets.count > 0);
 }
 
 - (void)setupToolbar
@@ -224,16 +234,16 @@
                    name:ALAssetsLibraryChangedNotification
                  object:nil];
     
-    [center addObserver:self
-               selector:@selector(selectedAssetsChanged:)
-                   name:CTAssetsPickerSelectedAssetsChangedNotification
-                 object:nil];
+//    [center addObserver:self
+//               selector:@selector(selectedAssetsChanged:)
+//                   name:CTAssetsPickerSelectedAssetsChangedNotification
+//                 object:nil];
 }
 
 - (void)removeNotificationObserver
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:CTAssetsPickerSelectedAssetsChangedNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:CTAssetsPickerSelectedAssetsChangedNotification object:nil];
 }
 
 
@@ -342,10 +352,11 @@
 - (void)selectedAssetsChanged:(NSNotification *)notification
 {
     NSArray *selectedAssets = (NSArray *)notification.object;
+    [[self.toolbarItems objectAtIndex:1] setTitle:[NSString stringWithFormat:@"%ld",(long)selectedAssets.count]];
+
+//    [[self.toolbarItems objectAtIndex:1] setTitle:[self.picker toolbarTitle]];
     
-    [[self.toolbarItems objectAtIndex:1] setTitle:[self.picker toolbarTitle]];
-    
-    [self.navigationController setToolbarHidden:(selectedAssets.count == 0) animated:YES];
+//    [self.navigationController setToolbarHidden:(selectedAssets.count == 0) animated:YES];
 }
 
 

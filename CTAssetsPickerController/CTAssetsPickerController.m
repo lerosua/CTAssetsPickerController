@@ -33,7 +33,7 @@
 #import "NSBundle+CTAssetsPickerController.h"
 #import "UIImage+CTAssetsPickerController.h"
 
-
+#import "CTAIconButton.h"
 
 NSString * const CTAssetsPickerSelectedAssetsChangedNotification = @"CTAssetsPickerSelectedAssetsChangedNotification";
 
@@ -180,7 +180,7 @@ NSString * const CTAssetsPickerSelectedAssetsChangedNotification = @"CTAssetsPic
 {
     if ([keyPath isEqual:@"selectedAssets"])
     {
-        [self toggleDoneButton];
+//        [self toggleDoneButton];
         [self postNotification:[object valueForKey:keyPath]];
     }
 }
@@ -194,8 +194,11 @@ NSString * const CTAssetsPickerSelectedAssetsChangedNotification = @"CTAssetsPic
     
     BOOL enabled = (self.alwaysEnableDoneButton) ? YES : (self.selectedAssets.count > 0);
     
-    for (UIViewController *viewController in nav.viewControllers)
-        viewController.navigationItem.rightBarButtonItem.enabled = enabled;
+    for (UIViewController *viewController in nav.viewControllers){
+//        viewController.navigationItem.rightBarButtonItem.enabled = enabled;
+       UIBarButtonItem *item =  [viewController.toolbarItems lastObject];
+        item.enabled = enabled;
+    }
 }
 
 
@@ -444,7 +447,9 @@ NSString * const CTAssetsPickerSelectedAssetsChangedNotification = @"CTAssetsPic
         CTAssetsPickerControllerLocalizedString(@"%ld Videos Selected") :
         CTAssetsPickerControllerLocalizedString(@"%ld Video Selected");
     
-    return [NSString stringWithFormat:format, (long)self.selectedAssets.count];
+//    return [NSString stringWithFormat:format, (long)self.selectedAssets.count];
+    
+    return [NSString stringWithFormat:@"%ld",(long)self.selectedAssets.count];
 }
 
 
@@ -452,14 +457,11 @@ NSString * const CTAssetsPickerSelectedAssetsChangedNotification = @"CTAssetsPic
 
 - (UIBarButtonItem *)titleButtonItem
 {
-    UIBarButtonItem *title =
-    [[UIBarButtonItem alloc] initWithTitle:self.toolbarTitle
-                                     style:UIBarButtonItemStylePlain
-                                    target:nil
-                                    action:nil];
-
-    [title setEnabled:NO];
     
+    CTAIconButtonBarItem *title = [[CTAIconButtonBarItem alloc] init];
+
+    [title.iconButton addTarget:self action:@selector(finishPickingAssets:) forControlEvents:UIControlEventTouchUpInside];
+    [title setTitle:[NSString stringWithFormat:@"%ld",(long)self.selectedAssets.count]];
     return title;
 }
 
@@ -473,7 +475,7 @@ NSString * const CTAssetsPickerSelectedAssetsChangedNotification = @"CTAssetsPic
     UIBarButtonItem *title = [self titleButtonItem];
     UIBarButtonItem *space = [self spaceButtonItem];
     
-    return @[space, title, space];
+    return @[space, title];
 }
 
 
