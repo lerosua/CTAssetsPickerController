@@ -100,8 +100,8 @@
 - (void) setupNavbar {
     self.selectButton= [UIButton buttonWithType:UIButtonTypeCustom];
     self.selectButton.frame = CGRectMake(0, 0, 30, 30);
-    [self.selectButton setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerUnChecked"] forState:UIControlStateNormal];
-    [self.selectButton setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerChecked"] forState:UIControlStateHighlighted];
+    [self.selectButton setImage:[UIImage imageNamed:@"CTAssetsPickerUnChecked"] forState:UIControlStateNormal];
+    [self.selectButton setImage:[UIImage imageNamed:@"CTAssetsPickerChecked"] forState:UIControlStateHighlighted];
     [self.selectButton addTarget:self action:@selector(selectAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:self.selectButton];
     self.navigationItem.rightBarButtonItem = rightItem;
@@ -154,9 +154,9 @@
     if (index < self.assets.count) {
         ALAsset *asset = [self.assets objectAtIndex:index];
         if([self.picker.selectedAssets containsObject:asset]){
-            [self.selectButton setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerChecked"] forState:UIControlStateNormal];
+            [self.selectButton setImage:[UIImage imageNamed:@"CTAssetsPickerChecked"] forState:UIControlStateNormal];
         }else{
-            [self.selectButton setBackgroundImage:[UIImage imageNamed:@"CTAssetsPickerUnChecked"] forState:UIControlStateNormal];
+            [self.selectButton setImage:[UIImage imageNamed:@"CTAssetsPickerUnChecked"] forState:UIControlStateNormal];
         }
     }
 
