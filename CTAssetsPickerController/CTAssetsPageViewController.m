@@ -118,6 +118,9 @@
         ALAsset *asset = [self.assets objectAtIndex:self.pageIndex];
         if([self.picker.selectedAssets containsObject:asset]){
             [self.picker deselectAsset:asset];
+            if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didDeselectAsset:)]){
+                [self.picker.delegate assetsPickerController:self.picker didDeselectAsset:asset];
+            }
         }else{
             if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldSelectAsset:)]){
                 if([self.picker.delegate assetsPickerController:self.picker shouldSelectAsset:asset]){
@@ -125,8 +128,9 @@
                 }
             }else{
                 [self.picker selectAsset:asset];
-                if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didSelectAsset:)])
+                if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didSelectAsset:)]){
                     [self.picker.delegate assetsPickerController:self.picker didSelectAsset:asset];
+                }
             }
         }
         [self setButtonStatus:self.pageIndex];
