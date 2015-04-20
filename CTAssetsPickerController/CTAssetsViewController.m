@@ -449,6 +449,9 @@ NSString * const CTAssetsSupplementaryViewIdentifier = @"CTAssetsSupplementaryVi
             if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldSelectAsset:)]){
                 if([self.picker.delegate assetsPickerController:self.picker shouldSelectAsset:asset]){
                     [self.picker selectAsset:asset];
+                    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didSelectAsset:)]){
+                        [self.picker.delegate assetsPickerController:self.picker didSelectAsset:asset];
+                    }
                 }
             }else{
                 [self.picker selectAsset:asset];
