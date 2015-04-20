@@ -47,6 +47,7 @@
 @implementation CTAIconButton
 
 static CGFloat IconButtonOffetY = 10;
+#define CTATextColor    [UIColor greenColor]
 
 - (instancetype) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -67,7 +68,7 @@ static CGFloat IconButtonOffetY = 10;
         
         _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, IconButtonOffetY, CGRectGetWidth(frame)-20, 20)];
         _textLabel.font = [UIFont systemFontOfSize:14];
-        _textLabel.textColor = [UIColor greenColor];
+        _textLabel.textColor = CTATextColor;
         _textLabel.text = CTAssetsPickerControllerLocalizedString(@"Done");
         [self addSubview:_textLabel];
     }
@@ -78,10 +79,11 @@ static CGFloat IconButtonOffetY = 10;
     
     if ([numStr isEqualToString:@"0"]) {
         self.iconView.hidden = YES;
+        self.textLabel.textColor = [UIColor grayColor];
     }else{
         self.iconView.hidden = NO;
         self.numberLabel.text = numStr;
-        
+        self.textLabel.textColor = CTATextColor;
         //做动画
         [self.iconView cta_scaleAnimation];
     }
