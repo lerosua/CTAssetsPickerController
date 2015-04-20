@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@interface UIView (CTAAnimation)
+
+- (void) cta_scaleAnimation;
+
+@end
+
 @interface CTAIconButton : UIButton
 
 - (void) setNumberText:(NSString *)numStr;

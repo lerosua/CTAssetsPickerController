@@ -7,6 +7,34 @@
 //
 
 #import "CTAIconButton.h"
+#import "NSBundle+CTAssetsPickerController.h"
+#import <POP.h>
+
+@implementation UIView(CTAAnimation)
+
+- (void) cta_scaleAnimation {
+    float resizeValue = 1.2f;
+    
+    // Grow animation
+    POPSpringAnimation *scaleAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
+    
+    scaleAnimation.fromValue  = [NSValue valueWithCGSize:CGSizeMake(0.5, 0.5f)];
+    //    scaleAnimation.springBounciness = 18.0f;
+    scaleAnimation.toValue  = [NSValue valueWithCGSize:CGSizeMake(resizeValue, resizeValue)];
+    scaleAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
+        // Grow animation done
+        POPSpringAnimation *scaleAnimationDown = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
+        scaleAnimationDown.fromValue  = [NSValue valueWithCGSize:CGSizeMake(resizeValue, resizeValue)];
+        scaleAnimationDown.toValue  = [NSValue valueWithCGSize:CGSizeMake(1.0f, 1.0f)];
+        scaleAnimationDown.springBounciness = 18.0f;
+        
+        [self.layer pop_addAnimation:scaleAnimationDown forKey:@"OJAscaleDownAnimation"];
+    };
+    
+    [self.layer pop_addAnimation:scaleAnimation forKey:@"OJAscaleUpAnimation"];
+}
+
+@end
 
 @interface CTAIconButton()
 
@@ -18,24 +46,29 @@
 
 @implementation CTAIconButton
 
+static CGFloat IconButtonOffetY = 10;
+
 - (instancetype) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if(self){
-        _iconView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        _iconView = [[UIView alloc] initWithFrame:CGRectMake(0, IconButtonOffetY+2, 16, 16)];
         _iconView.backgroundColor = [UIColor greenColor];
-        _numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        _iconView.layer.cornerRadius = 8;
+        _iconView.layer.masksToBounds = YES;
+        
+        _numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 16, 16)];
         _numberLabel.textColor = [UIColor whiteColor];
-        _numberLabel.font = [UIFont systemFontOfSize:14];
+        _numberLabel.font = [UIFont systemFontOfSize:12];
         _numberLabel.text = @"0";
         [_iconView addSubview:_numberLabel];
         
         [self addSubview:_iconView];
 //        _iconView.hidden = YES;
         
-        _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, CGRectGetWidth(frame)-20, 20)];
+        _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, IconButtonOffetY, CGRectGetWidth(frame)-20, 20)];
         _textLabel.font = [UIFont systemFontOfSize:14];
         _textLabel.textColor = [UIColor greenColor];
-        _textLabel.text = @"完成";
+        _textLabel.text = CTAssetsPickerControllerLocalizedString(@"Done");
         [self addSubview:_textLabel];
     }
     return self;
@@ -48,8 +81,12 @@
     }else{
         self.iconView.hidden = NO;
         self.numberLabel.text = numStr;
+        
+        //做动画
+        [self.iconView cta_scaleAnimation];
     }
-    //做动画
+
+    
 }
 
 @end
