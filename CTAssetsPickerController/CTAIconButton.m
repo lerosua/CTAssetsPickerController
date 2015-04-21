@@ -47,13 +47,14 @@
 @implementation CTAIconButton
 
 static CGFloat IconButtonOffetY = 10;
-#define CTATextColor    [UIColor greenColor]
+#define CTATextColor      [UIColor colorWithRed:107/255.0 green:183/255.0 blue:39/255.0 alpha:1]
+
 
 - (instancetype) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if(self){
         _iconView = [[UIView alloc] initWithFrame:CGRectMake(0, IconButtonOffetY+2, 16, 16)];
-        _iconView.backgroundColor = [UIColor greenColor];
+        _iconView.backgroundColor = CTATextColor;
         _iconView.layer.cornerRadius = 8;
         _iconView.layer.masksToBounds = YES;
         
@@ -65,7 +66,7 @@ static CGFloat IconButtonOffetY = 10;
         
         [self addSubview:_iconView];
 //        _iconView.hidden = YES;
-        
+
         _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, IconButtonOffetY, CGRectGetWidth(frame)-20, 20)];
         _textLabel.font = [UIFont systemFontOfSize:14];
         _textLabel.textColor = CTATextColor;
