@@ -122,7 +122,7 @@ static UIColor *disabledColor;
         [self drawDisabledViewInRect:rect];
 
     else{
-        self.selectButton.frame = CGRectMake(CGRectGetMaxX(rect) - checkedIcon.size.width, 0, 30, 30);
+        self.selectButton.frame = CGRectMake(CGRectGetMaxX(rect) - 36, 0, 36, 36);
         if(self.isSelected){
             [self drawSelectedViewInRect:rect];
         }else{
@@ -189,7 +189,7 @@ static UIColor *disabledColor;
 //    CGContextSetFillColorWithColor(context, selectedColor.CGColor);
 //    CGContextFillRect(context, rect);
     
-    [checkedIcon drawAtPoint:CGPointMake(CGRectGetMaxX(rect) - checkedIcon.size.width, CGRectGetMinY(rect))];
+    [checkedIcon drawAtPoint:CGPointMake(CGRectGetMaxX(rect) - checkedIcon.size.width-4, CGRectGetMinY(rect)+4)];
 }
 
 - (void)drawUnSelectedViewInRect:(CGRect)rect
@@ -198,7 +198,7 @@ static UIColor *disabledColor;
 //    CGContextSetFillColorWithColor(context, selectedColor.CGColor);
 //    CGContextFillRect(context, rect);
     
-    [unCheckedIcon drawAtPoint:CGPointMake(CGRectGetMaxX(rect) - unCheckedIcon.size.width, CGRectGetMinY(rect))];
+    [unCheckedIcon drawAtPoint:CGPointMake(CGRectGetMaxX(rect) - unCheckedIcon.size.width-4, CGRectGetMinY(rect)+4)];
 }
 
 #pragma mark - Accessibility Label
