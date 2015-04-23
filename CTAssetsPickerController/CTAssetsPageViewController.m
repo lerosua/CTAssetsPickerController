@@ -156,7 +156,7 @@
         if([self.picker.selectedAssets containsObject:asset]){
             [self.selectButton setImage:[UIImage imageNamed:@"CTAssetsPickerChecked"] forState:UIControlStateNormal];
         }else{
-            [self.selectButton setImage:[UIImage imageNamed:@"CTAssetsPickerUnChecked"] forState:UIControlStateNormal];
+            [self.selectButton setImage:[UIImage imageNamed:@"CTAssetsPickerNavUnChecked"] forState:UIControlStateNormal];
         }
     }
 
