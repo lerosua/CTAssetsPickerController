@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+#define CTATextColor      [UIColor colorWithRed:107/255.0 green:183/255.0 blue:39/255.0 alpha:1]
+
 
 #define CTAssetsPickerControllerLocalizedString(key) \
 NSLocalizedStringFromTableInBundle((key), @"CTAssetsPickerController", [NSBundle ctassetsPickerControllerBundle], nil)
+
 
 @interface NSBundle (CTAssetsPickerController)
 

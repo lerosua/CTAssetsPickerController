@@ -47,7 +47,6 @@
 @implementation CTAIconButton
 
 static CGFloat IconButtonOffetY = 10;
-#define CTATextColor      [UIColor colorWithRed:107/255.0 green:183/255.0 blue:39/255.0 alpha:1]
 
 
 - (instancetype) initWithFrame:(CGRect)frame {

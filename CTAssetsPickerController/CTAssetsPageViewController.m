@@ -99,9 +99,13 @@
 #pragma mark -
 - (void) setupNavbar {
     self.selectButton= [UIButton buttonWithType:UIButtonTypeCustom];
-    self.selectButton.frame = CGRectMake(0, 0, 30, 30);
+    self.selectButton.frame = CGRectMake(0, 0, 70, 30);
     [self.selectButton setImage:[UIImage imageNamed:@"CTAssetsPickerNavUnChecked"] forState:UIControlStateNormal];
     [self.selectButton setImage:[UIImage imageNamed:@"CTAssetsPickerChecked"] forState:UIControlStateHighlighted];
+    [self.selectButton setTitle:@"选择" forState:UIControlStateNormal];
+    [self.selectButton setTitleColor:CTATextColor forState:UIControlStateNormal];
+    self.selectButton.titleLabel.font = [UIFont systemFontOfSize:15];
+    [self.selectButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
     [self.selectButton addTarget:self action:@selector(selectAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:self.selectButton];
     self.navigationItem.rightBarButtonItem = rightItem;
