@@ -98,7 +98,10 @@
  */
 @property (nonatomic, readonly, strong) UINavigationController *childNavigationController;
 
-
+/**
+ *  limit the photo selected
+ */
+@property (nonatomic, assign) NSInteger limitSelectCount;
 /**
  *  @name Managing Selections
  */

@@ -352,7 +352,7 @@
 - (void)selectedAssetsChanged:(NSNotification *)notification
 {
     NSArray *selectedAssets = (NSArray *)notification.object;
-    [[self.toolbarItems objectAtIndex:1] setTitle:[NSString stringWithFormat:@"%ld",(long)selectedAssets.count]];
+    [[self.toolbarItems objectAtIndex:1] setTitle:[NSString stringWithFormat:@"确定(%ld)",(long)selectedAssets.count]];
 
 //    [[self.toolbarItems objectAtIndex:1] setTitle:[self.picker toolbarTitle]];
     

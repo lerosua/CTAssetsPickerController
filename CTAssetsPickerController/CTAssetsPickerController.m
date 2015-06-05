@@ -450,6 +450,8 @@ NSString * const CTAssetsPickerSelectedAssetsChangedNotification = @"CTAssetsPic
 //    return [NSString stringWithFormat:format, (long)self.selectedAssets.count];
     
     return [NSString stringWithFormat:@"%ld",(long)self.selectedAssets.count];
+//    return [NSString stringWithFormat:@"确定(%ld)",(long)self.selectedAssets.count];
+
 }
 
 
@@ -457,12 +459,18 @@ NSString * const CTAssetsPickerSelectedAssetsChangedNotification = @"CTAssetsPic
 
 - (UIBarButtonItem *)titleButtonItem
 {
+//    CTAIconButtonBarItem *title = [[CTAIconButtonBarItem alloc] init];
+//
+//    [title.iconButton addTarget:self action:@selector(finishPickingAssets:) forControlEvents:UIControlEventTouchUpInside];
+//    [title setTitle:[NSString stringWithFormat:@"%ld",(long)self.selectedAssets.count]];
+//    return title;
     
-    CTAIconButtonBarItem *title = [[CTAIconButtonBarItem alloc] init];
-
-    [title.iconButton addTarget:self action:@selector(finishPickingAssets:) forControlEvents:UIControlEventTouchUpInside];
-    [title setTitle:[NSString stringWithFormat:@"%ld",(long)self.selectedAssets.count]];
-    return title;
+    
+    NSString *title = [NSString stringWithFormat:@"确定(%ld/%ld)",(long)self.selectedAssets.count,self.limitSelectCount];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleBordered target:self action:@selector(finishPickingAssets:) ];
+    [button setTitleTextAttributes:@{NSForegroundColorAttributeName:CTATextColor} forState:UIControlStateNormal];
+    return button;
+    
 }
 
 - (UIBarButtonItem *)spaceButtonItem

@@ -99,6 +99,7 @@
     picker.showsCancelButton    = (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad);
     picker.delegate             = self;
     picker.selectedAssets       = [NSMutableArray arrayWithArray:self.assets];
+    picker.limitSelectCount = 10;
     
     // iPad
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
