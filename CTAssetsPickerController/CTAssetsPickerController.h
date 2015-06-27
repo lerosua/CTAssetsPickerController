@@ -124,6 +124,10 @@
  */
 - (void)deselectAsset:(ALAsset *)asset;
 
+//toolbar显示内容
+- (NSString *)toolbarTitle;
+//toolbar完成回调
+- (void)finishPickingAssets:(id)sender;
 @end
 
 

@@ -77,7 +77,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setupToolbar];
+//    [self setupToolbar];
     
 }
 - (void) viewDidAppear:(BOOL)animated
@@ -111,10 +111,10 @@
     self.navigationItem.rightBarButtonItem = rightItem;
 }
 
-- (void)setupToolbar
-{
-    self.toolbarItems = self.picker.toolbarItems;
-}
+//- (void)setupToolbar
+//{
+//    self.toolbarItems = self.picker.toolbarItems;
+//}
 
 - (void) selectAction:(UIButton *)sender {
     
@@ -334,6 +334,13 @@
 }
 
 
+- (void)finishPickingAssets:(id)sender
+{
+    if (self.picker.selectedAssets.count == 0) {
+        [self selectAction:sender];
+    }
+    [self.picker finishPickingAssets:sender];
+}
 
 #pragma mark - CTAssetItemViewControllerDataSource
 
@@ -345,5 +352,29 @@
 - (CTAssetsPickerController *)picker
 {
     return (CTAssetsPickerController *)self.navigationController.parentViewController;
+}
+
+#pragma mark - toolbar
+- (UIBarButtonItem *)titleButtonItem
+{
+    
+    NSString *title = self.picker.toolbarTitle;
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleBordered target:self action:@selector(finishPickingAssets:) ];
+    [button setTitleTextAttributes:@{NSForegroundColorAttributeName:CTATextColor} forState:UIControlStateNormal];
+    return button;
+    
+}
+
+- (UIBarButtonItem *)spaceButtonItem
+{
+    return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+}
+
+- (NSArray *)toolbarItems
+{
+    UIBarButtonItem *title = [self titleButtonItem];
+    UIBarButtonItem *space = [self spaceButtonItem];
+    
+    return @[space, title];
 }
 @end
